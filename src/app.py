@@ -1,8 +1,12 @@
 import requests
-from flask import Flask, render_template
+from fastapi import FastAPI, Request, Form
+from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from locale import atof, setlocale, LC_NUMERIC
 
-# get block height info
+# import uvicorn
+
 def get_block_height():
     url = "https://api.blockchair.com/bitcoin/stats"
     res = requests.get(url)
@@ -23,19 +27,64 @@ def coindesk_btc_fiat(symbol):
     return time, r
 
 
-app = Flask(__name__)
+title = "sats converter"
+description = "simple web app to convert fiat to btc"
 
-@app.route('/')
-def home():
+app = FastAPI(
+    title=title,
+    description=description,
+    version="0.0.1 alpha",
+    contact={
+        "name": "bitkarrot",
+        "url": "http://github.com/bitkarrot",
+    },
+    license_info={
+        "name": "MIT License",
+        "url": "https://mit-license.org/",
+    },
+)
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:5000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.mount("/static", StaticFiles(directory="static"), name='static')
+templates = Jinja2Templates(directory='templates/')
+
+
+@app.get("/")
+def initial_page(request: Request):
     time, usdrate = coindesk_btc_fiat('USD')
     btcusd = "%.2f" % usdrate
     time, rate = coindesk_btc_fiat('HKD')
     btchkd = "%.2f" % rate
     moscowtime = int(100000000/float(btcusd))
     height = get_block_height()
-    return render_template("index.html", title="Sats Converter", usdprice=btcusd, hkdprice=btchkd, moscow=moscowtime, blockheight=height, lastupdated=time)
+    return templates.TemplateResponse("index.html",
+                                      context={
+                                          'request': request,
+                                          'title': "Sats Converter",
+                                          'usdprice': btcusd,
+                                          'fiatprice': btchkd,
+                                          'moscow': moscowtime,
+                                          'blockheight': height,
+                                          'lastupdated': time})
 
 
-@app.route('/about')
-def about():
-    return 'About this app'
+# @app.route('/', methods=('POST'))
+# def convert_pricing():
+#     if request.method == 'POST':
+#          fiat_amt = request.form['fiatamt']
+#          sats_amt = request.form['satsamt']
+#     return render_template("index.html", title="Converted",
+#                            fiatprice=fiat_amt, btcprice=sats_amt)

@@ -1,5 +1,3 @@
-<!-- {# templates/index.html #}-->
-
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="/static/pico.min.css" />
@@ -20,33 +18,41 @@
     </hgroup>
 
     <section id="converter">
-      <form>
+      <form method="post">
         <div class="grid">
           <div class="row center-sm">
             <div class="col-sm-2">
-              <select id="select" name="select" required="">
-                <option value="HKD" selected="HKD">Select...</option>
-                <option>HKD</option>
-                <option>USD</option>
-                <option>EUR</option>
-                <option>GBP</option>
+
+             <select id="select1" name="fiatselect" required="true">
+                <option value="HKD" selected>HKD</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
               </select>
+
+
             </div>
             <div class="col-sm-6">
-              <input type="text" name="fiat" placeholder="{{hkdprice}}" aria-label="fiat">
+              <input type="text" name="fiatamt"
+                      placeholder="{{fiatprice}}"
+                      aria-label="fiat"
+                      value="">
             </div>
           </div>
         </div>
         <div class="row center-sm">
           <div class="col-sm-2">
-            <select id="select" name="select" required="">
-              <option value="BTC" selected="BTC">Select...</option>
-              <option>BTC</option>
-              <option>Sats</option>
+            <select id="select2" name="satselect" required="true">
+              <option value="BTC" selected>BTC</option>
+              <option value="SATS">Sats</option>
             </select>
           </div>
           <div class="col-sm-6">
-            <input type="text" name="btc" placeholder="1.00" aria-label="btc">
+            <input type="text"
+                    name="satsamt"
+                    placeholder="1.00"
+                    aria-label="btc"
+                    value="">
           </div>
         </div>
         <div class="row center-sm">
