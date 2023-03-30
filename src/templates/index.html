@@ -17,7 +17,8 @@
       <h1>Welcome to {{ title }}!</h1>
       <p>A Basic Bitcoin to Fiat converter with price feeds from Coingecko.</p>
       <p>
-        Latest Price: 28,880 USD per BTC
+        Latest Price: {{ usdprice }} USD / BTC <br/>
+        as of: {{lastupdated}}
       </p>
     </hgroup>
 
@@ -35,7 +36,7 @@
                 </select>
               </div>
               <div class="col-sm-6">
-                <input type="text" name="fiat" placeholder="1000" aria-label="fiat">
+                <input type="text" name="fiat" placeholder="{{hkdprice}}" aria-label="fiat">
               </div>
             </div>
           </div>
