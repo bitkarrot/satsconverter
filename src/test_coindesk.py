@@ -1,17 +1,4 @@
-import requests
-from locale import atof, setlocale, LC_NUMERIC
-
-def coindesk_btc_fiat(symbol):
-    # batch the requests together via asyncio or multiprocessing
-    setlocale(LC_NUMERIC, '')
-    url = f'https://api.coindesk.com/v1/bpi/currentprice/{symbol}.json'
-    response = requests.get(url)
-    ticker = response.json()
-    time = ticker["time"]['updated']
-    rate = ticker['bpi'][symbol]['rate']
-    r = atof(rate)
-    return time, r
-
+from app import coindesk_btc_fiat
 
 if __name__ == "__main__":
     
