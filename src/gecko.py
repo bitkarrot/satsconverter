@@ -8,6 +8,17 @@ def ping():
     data = response.json()
     return data
 
+def getBTCvsFiat(fiat):
+    response = requests.get(base_url + "/simple/price?ids=bitcoin&vs_currencies=" + fiat)
+    data = response.json()
+    return data
 
-# if __name__ == "__main__":
+def getBTCTicker():
+    res = requests.get(base_url + "/coins/bitcoin/tickers")
+    data = res.json()
+    return data
+
+if __name__ == "__main__":
+   # print(getBTCTicker())
+   print(getBTCvsFiat("USD"))
 #     print(ping())

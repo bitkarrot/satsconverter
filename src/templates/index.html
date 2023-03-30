@@ -4,6 +4,7 @@
 <html lang="en">
 <link rel="stylesheet" href="/static/pico.min.css" />
 <link rel="stylesheet" href="/static/css/themes/amber.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css" >
 
 <head>
   <meta charset="utf-8">
@@ -11,7 +12,7 @@
 </head>
 
 <body>
-  <main class="container">
+  <main class="container center-sm">
     <hgroup>
       <h1>Welcome to {{ title }}!</h1>
       <p>A Basic Bitcoin to Fiat converter with price feeds from Coingecko.</p>
@@ -23,22 +24,39 @@
     <section id="converter">
       <form>
         <div class="grid">
-          <input type="text" name="fiat" placeholder="1000" aria-label="fiat">
-          <select id="select" name="select" required="">
-            <option value="HKD" selected="HKD">Select...</option>
-            <option>HKD</option>
-            <option>USD</option>
-            <option>EUR</option>
-            <option>GBP</option>
-          </select>
-          <button type="submit"><<->></button>
-          <input type="text" name="btc" placeholder="1.00" aria-label="btc">
-          <select id="select" name="select" required="">
-            <option value="BTC" selected="BTC">Select...</option>
-            <option>BTC</option>
-            <option>Sats</option>
-          </select>
+          <div class="row center-sm">
+              <div class="col-sm-2">
+                <select id="select" name="select" required="">
+                  <option value="HKD" selected="HKD">Select...</option>
+                  <option>HKD</option>
+                  <option>USD</option>
+                  <option>EUR</option>
+                  <option>GBP</option>
+                </select>
+              </div>
+              <div class="col-sm-6">
+                <input type="text" name="fiat" placeholder="1000" aria-label="fiat">
+              </div>
+            </div>
+          </div>
+          <div class="row center-sm">
+            <div class="col-sm-2">
+              <select id="select" name="select" required="">
+                <option value="BTC" selected="BTC">Select...</option>
+                <option>BTC</option>
+                <option>Sats</option>
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" name="btc" placeholder="1.00" aria-label="btc">
+            </div>
         </div>
+        <div class="row center-sm">
+          <div class="col-sm-2">
+            <button type="submit">Go</button>
+          </div>
+        </div>
+
       </form>
     </section>
 
