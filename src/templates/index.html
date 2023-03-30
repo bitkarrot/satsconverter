@@ -4,7 +4,8 @@
 <html lang="en">
 <link rel="stylesheet" href="/static/pico.min.css" />
 <link rel="stylesheet" href="/static/css/themes/amber.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css" >
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
+  type="text/css">
 
 <head>
   <meta charset="utf-8">
@@ -22,60 +23,54 @@
       <form>
         <div class="grid">
           <div class="row center-sm">
-              <div class="col-sm-2">
-                <select id="select" name="select" required="">
-                  <option value="HKD" selected="HKD">Select...</option>
-                  <option>HKD</option>
-                  <option>USD</option>
-                  <option>EUR</option>
-                  <option>GBP</option>
-                </select>
-              </div>
-              <div class="col-sm-6">
-                <input type="text" name="fiat" placeholder="{{hkdprice}}" aria-label="fiat">
-              </div>
-            </div>
-          </div>
-          <div class="row center-sm">
             <div class="col-sm-2">
               <select id="select" name="select" required="">
-                <option value="BTC" selected="BTC">Select...</option>
-                <option>BTC</option>
-                <option>Sats</option>
+                <option value="HKD" selected="HKD">Select...</option>
+                <option>HKD</option>
+                <option>USD</option>
+                <option>EUR</option>
+                <option>GBP</option>
               </select>
             </div>
             <div class="col-sm-6">
-              <input type="text" name="btc" placeholder="1.00" aria-label="btc">
+              <input type="text" name="fiat" placeholder="{{hkdprice}}" aria-label="fiat">
             </div>
+          </div>
+        </div>
+        <div class="row center-sm">
+          <div class="col-sm-2">
+            <select id="select" name="select" required="">
+              <option value="BTC" selected="BTC">Select...</option>
+              <option>BTC</option>
+              <option>Sats</option>
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <input type="text" name="btc" placeholder="1.00" aria-label="btc">
+          </div>
         </div>
         <div class="row center-sm">
           <!-- <div class="col-sm-2">
             <button type="submit">Go</button>
           </div> -->
         </div>
-
       </form>
     </section>
 
     <section id="ticker">
       <p>
-        $ {{ usdprice }} USD / BTC <br/>
-        {{ moscow }} Moscow Time (sats/usd) <br/>
-        As of {{lastupdated}} <br/>
+        $ {{ usdprice }} USD / BTC <br />
+        {{ moscow }} Moscow Time (sats/usd) <br />
+        As of {{lastupdated}} <br />
       </p>
     </section>
-      <footer>
-        Built with <a href="https://picocss.com"> Pico </a>  • <a href="https://github.com/">Source</a>
-      </footer>
-    </main>
+    <footer>
+      Built with <a href="https://picocss.com"> Pico </a> • <a href="https://github.com/">Source</a>
+    </footer>
+  </main>
+
+  <!-- vue global -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
 </body>
 </html>
-
-
-<!-- <div class="grid">
-  <label for="date">
-    Date
-  </label>
-  <input id="date" type="date" name="date">
-</div> -->
