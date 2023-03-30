@@ -1,5 +1,18 @@
+import requests
 from flask import Flask, render_template
-from coindesk import coindesk_btc_fiat
+from locale import atof, setlocale, LC_NUMERIC
+
+def coindesk_btc_fiat(symbol):
+    # batch the requests together via asyncio or multiprocessing
+    setlocale(LC_NUMERIC, '')
+    url = f'https://api.coindesk.com/v1/bpi/currentprice/{symbol}.json'
+    response = requests.get(url)
+    ticker = response.json()
+    time = ticker["time"]['updated']
+    rate = ticker['bpi'][symbol]['rate']
+    r = atof(rate)
+    return time, r
+
 
 app = Flask(__name__)
 
