@@ -3,8 +3,6 @@ from flask import Flask, render_template
 from locale import atof, setlocale, LC_NUMERIC
 
 # get block height info
-# https://api.blockchair.com/bitcoin/stats
-
 def get_block_height():
     url = "https://api.blockchair.com/bitcoin/stats"
     res = requests.get(url)
