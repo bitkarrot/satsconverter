@@ -2,6 +2,17 @@ import requests
 from flask import Flask, render_template
 from locale import atof, setlocale, LC_NUMERIC
 
+# get block height info
+# https://api.blockchair.com/bitcoin/stats
+
+def get_block_height():
+    url = "https://api.blockchair.com/bitcoin/stats"
+    res = requests.get(url)
+    data = res.json()
+    height = data['data']['best_block_height']
+    return height
+
+
 def coindesk_btc_fiat(symbol):
     # batch the requests together via asyncio or multiprocessing
     setlocale(LC_NUMERIC, '')
@@ -23,7 +34,8 @@ def home():
     time, rate = coindesk_btc_fiat('HKD')
     btchkd = "%.2f" % rate
     moscowtime = int(100000000/float(btcusd))
-    return render_template("index.html", title="Sats Converter", usdprice=btcusd, hkdprice=btchkd, moscow=moscowtime, lastupdated=time)
+    height = get_block_height()
+    return render_template("index.html", title="Sats Converter", usdprice=btcusd, hkdprice=btchkd, moscow=moscowtime, blockheight=height, lastupdated=time)
 
 
 @app.route('/about')
