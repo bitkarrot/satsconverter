@@ -9,7 +9,8 @@ def home():
     btcusd = "%.2f" % usdrate
     time, rate = coindesk_btc_fiat('HKD')
     btchkd = "%.2f" % rate
-    return render_template("index.html", title="Sats Converter", usdprice=btcusd, hkdprice=btchkd, lastupdated=time)
+    moscowtime = int(100000000/float(btcusd))
+    return render_template("index.html", title="Sats Converter", usdprice=btcusd, hkdprice=btchkd, moscow=moscowtime, lastupdated=time)
 
 
 @app.route('/about')

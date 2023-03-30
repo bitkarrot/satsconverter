@@ -14,12 +14,8 @@
 <body>
   <main class="container center-sm">
     <hgroup>
-      <h1>Welcome to {{ title }}!</h1>
+      <h1 style="color:#ffb300">Welcome to {{ title }}!</h1>
       <p>A Basic Bitcoin to Fiat converter with price feeds from Coingecko.</p>
-      <p>
-        Latest Price: {{ usdprice }} USD / BTC <br/>
-        as of: {{lastupdated}}
-      </p>
     </hgroup>
 
     <section id="converter">
@@ -53,14 +49,21 @@
             </div>
         </div>
         <div class="row center-sm">
-          <div class="col-sm-2">
+          <!-- <div class="col-sm-2">
             <button type="submit">Go</button>
-          </div>
+          </div> -->
         </div>
 
       </form>
     </section>
 
+    <section id="ticker">
+      <p>
+        $ {{ usdprice }} USD / BTC <br/>
+        {{ moscow }} Moscow Time (sats/usd) <br/>
+        As of {{lastupdated}} <br/>
+      </p>
+    </section>
       <footer>
         Built with <a href="https://picocss.com"> Pico </a>  • <a href="https://github.com/">Source</a>
       </footer>
