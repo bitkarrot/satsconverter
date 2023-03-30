@@ -1,12 +1,61 @@
-{# templates/index.html #}
+<!-- {# templates/index.html #}-->
 
 <!DOCTYPE html>
 <html lang="en">
+<link rel="stylesheet" href="/static/pico.min.css" />
+<link rel="stylesheet" href="/static/css/themes/amber.css">
+
 <head>
   <meta charset="utf-8">
   <title>{{ title }}</title>
 </head>
+
 <body>
-  <h1>Welcome to {{ title }}!</h1>
+  <header class="container">
+    <hgroup>
+      <h1>Welcome to {{ title }}!</h1>
+      <p>A Basic Bitcoin to Fiat converter with price feeds from Coingecko.</p>
+      <p>
+        Latest Price: 28,880 USD per BTC
+      </p>
+    </hgroup>
+  </header>
+
+  <main class="container">
+    <section id="converter">
+      <form>
+        <div class="grid">
+          <input type="text" name="fiat" placeholder="1000" aria-label="fiat">
+          <select id="select" name="select" required="">
+            <option value="HKD" selected="HKD">Select...</option>
+            <option>HKD</option>
+            <option>USD</option>
+            <option>EUR</option>
+            <option>GBP</option>
+          </select>
+          <button type="submit"><<->></button>
+          <input type="text" name="btc" placeholder="1.00" aria-label="btc">
+          <select id="select" name="select" required="">
+            <option value="BTC" selected="BTC">Select...</option>
+            <option>BTC</option>
+            <option>Sats</option>
+          </select>
+        </div>
+      </form>
+    </section>
+
+      <footer>
+        Built with <a href="https://picocss.com"> Pico </a>  • <a href="https://github.com/">Source</a>
+      </footer>
+    </main>
+
 </body>
 </html>
+
+
+<!-- <div class="grid">
+  <label for="date">
+    Date
+  </label>
+  <input id="date" type="date" name="date">
+</div> -->
