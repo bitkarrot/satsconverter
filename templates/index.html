@@ -79,12 +79,39 @@
     const fiatamt = document.getElementById('fiat')
     const satsamt = document.getElementById('satsamt')
 
+    const rate = fiatamt.value // 1 btc = fiat amt
+
     dropdown.addEventListener('change', () => {
       console.log(dropdown.value)
       form.submit();
     })
 
     // add input listener for in-page rate conversion
+    fiatamt.addEventListener('input', (event) => {
+      const userInput = event.target.value;
+      const regex = /^[0-9]+(\.[0-9]+)?$/;
+      const isValid = regex.test(userInput);
+      if (!isValid) {
+        event.target.value = userInput.slice(0, -1);
+      }
+      const result = parseFloat(userInput) / rate;  // convert btc to fiat rate
+      console.log(rate)
+      satsamt.value = result.toFixed(8);
+    });
+
+    // allow for decimals!!
+    satsamt.addEventListener('input', (event) => {
+      const userInput = event.target.value;
+      const regex = /^[0-9]+(\.[0-9]+)?$/;
+      const isValid = regex.test(userInput);
+      if (!isValid) {
+        event.target.value = userInput.slice(0, -1);
+      }
+      const result = parseFloat(userInput) * rate;  // convert sats to fiat rate
+      console.log(rate)
+      fiatamt.value = result.toFixed(2);
+    });
+
 
   </script>
 
