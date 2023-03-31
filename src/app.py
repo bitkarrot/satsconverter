@@ -87,7 +87,7 @@ async def initial_page(request: Request):
 @app.post("/convert")
 async def submit_form(request: Request, selected: str = Form(...)):  # fiatselect: str = Form(...)): # trunk-ignore(ruff/B008)
     try:
-        print(selected)
+#        print(selected)
 #       return {"data" : selected}
         time, rate = coindesk_btc_fiat(selected)
         btcfiat = "%.2f" % rate
@@ -101,6 +101,3 @@ async def submit_form(request: Request, selected: str = Form(...)):  # fiatselec
                                           'title': "Converter!"})
     except Exception as e:
         logging.error(e)
-
-#        data =  {'fiatselect': fiatselect}
-#        print(data)
