@@ -21,7 +21,6 @@
 
     <section id="converter">
         <div class="grid">
-
           <div class="row center-sm">
             <div class="col-sm-4">
                <button class="primary outline" name="swap">BTC</button>
@@ -58,8 +57,8 @@
             </div>
           </div>
         </div>
-        <label>
-          <span id="sats-label"></span>
+        <label style="color:#ffb300">
+            <span id="sats-label"></span> sats
         </label>
       <label>
         1 BTC = {{fiat}} {{fiattype}}
@@ -83,10 +82,10 @@
     const form = document.getElementById('my-form')
     const fiatamt = document.getElementById('fiat')
     const satsamt = document.getElementById('satsamt')
-//    const satlabel = document.getElementById('sats-label')
+    const satlabel = document.getElementById('sats-label')
+   // int satfactor = 100000000
 
     const rate = fiatamt.value // 1 btc = fiat amt
-
 
     dropdown.addEventListener('change', () => {
       console.log(dropdown.value)
@@ -104,9 +103,11 @@
       const result = parseFloat(userInput) / rate;  // convert btc to fiat rate
       console.log(rate)
       satsamt.value = result.toFixed(8);
+      satlabel.innerHTML = parseFloat(satsamt.value)*100000000;
+
     });
 
-    // allow for decimals!!
+    // btc input section
     satsamt.addEventListener('input', (event) => {
       const userInput = event.target.value;
       const regex = /^\d+(\.\d{0,8})?$/;
@@ -117,6 +118,8 @@
       const result = parseFloat(userInput) * rate;  // convert sats to fiat rate
       console.log(rate)
       fiatamt.value = result.toFixed(2);
+      satlabel.innerHTML = parseFloat(userInput)*100000000;
+
     });
 
 
