@@ -73,7 +73,7 @@
       </p>
     </section>
     <footer>
-      Built with <a href="https://picocss.com"> Pico </a> • By <a href="https://github.com/bitkarrot"> BitKarrot </a>
+      Built with <a href="https://picocss.com"> Pico </a> • By <a href="https://github.com/bitkarrot/satsconverter"> BitKarrot </a>
     </footer>
   </main>
 
@@ -83,7 +83,6 @@
     const fiatamt = document.getElementById('fiat')
     const satsamt = document.getElementById('satsamt')
     const satlabel = document.getElementById('sats-label')
-   // int satfactor = 100000000
 
     const rate = fiatamt.value // 1 btc = fiat amt
 
@@ -92,7 +91,7 @@
       form.submit();
     })
 
-    // add input listener for in-page rate conversion
+    // add fiat in-page rate conversion
     fiatamt.addEventListener('input', (event) => {
       const userInput = event.target.value;
       const regex = /^\d+(\.\d{0,2})?$/;
