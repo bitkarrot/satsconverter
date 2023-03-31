@@ -26,6 +26,7 @@
             </div>
             <div class="col-sm-6">
               <input type="text"
+                      id="satsamt"
                       name="satsamt"
                       placeholder="1.0"
                       aria-label="btc"
@@ -75,10 +76,16 @@
   <script>
     const dropdown = document.getElementById('selected')
     const form = document.getElementById('my-form')
+    const fiatamt = document.getElementById('fiat')
+    const satsamt = document.getElementById('satsamt')
+
     dropdown.addEventListener('change', () => {
       console.log(dropdown.value)
       form.submit();
     })
+
+    // add input listener for in-page rate conversion
+
   </script>
 
 </body>
