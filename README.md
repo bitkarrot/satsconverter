@@ -1,5 +1,7 @@
 # Satsconverter
 
+A Basic Bitcoin to Fiat converter with price feeds from Coindesk.
+
 ## To run this app
 
 ```sh
