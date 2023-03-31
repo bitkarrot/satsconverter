@@ -13,7 +13,9 @@
 <body>
   <main class="container center-sm">
     <hgroup>
-      <h1 style="color:#ffb300">Welcome to {{ title }}!</h1>
+        <h1 style="color:#ffb300">
+          <a href="/">Welcome to {{ title }}!</a>
+          </h1>
       <p>A Basic Bitcoin to Fiat converter with price feeds from Coindesk.</p>
     </hgroup>
 
@@ -22,7 +24,7 @@
 
           <div class="row center-sm">
             <div class="col-sm-4">
-               <button class="primary outline" type="" disabled>BTC</button>
+               <button class="primary outline" name="swap">BTC</button>
             </div>
             <div class="col-sm-6">
               <input type="text"
@@ -34,14 +36,16 @@
             </div>
           </div>
           <div class="row center-sm">
-            <div class="col-sm-4" id="app">
-              <form id="my-form" action="convert" method="post">
+            <div class="col-sm-4">
+              <form id="my-form" action="btc" method="post">
               <select id="selected" name="selected">
-                <!-- todo make dyanmic -->
-                  <option value="HKD">HKD</option>
-                  <option value="USD">USD</option>
-                  <option value="EUR">EUR</option>
-                  <option value="GBP">GBP</option>
+                {% for item in fiatlist %}
+                      {% if item == fiattype %}
+                      <option value="{{ item }}" selected>{{ item }}</option>
+                      {% else %}
+                      <option value="{{ item }}">{{ item }}</option>
+                      {% endif %}
+                {% endfor %}
                 </select>
               </form>
             </div>
@@ -54,16 +58,17 @@
             </div>
           </div>
         </div>
+        <label>
+          <span id="sats-label"></span> sats
+        </label>
       <label>
         1 BTC = {{fiat}} {{fiattype}}
       </label>
     </section>
 
-    <!-- <button type="submit">Go</button> -->
     <section id="ticker">
       <p>
-        $ {{ btcprice }} USD / BTC <br />
-        Moscow Time {{ moscow }} (sats/usd) <br />
+        Moscow Time {{ moscow }} (sats/{{fiattype}}) <br />
         Block Height {{ blockheight }}  <br/>
         As of {{lastupdated}} <br />
       </p>
@@ -78,8 +83,10 @@
     const form = document.getElementById('my-form')
     const fiatamt = document.getElementById('fiat')
     const satsamt = document.getElementById('satsamt')
+//    const satlabel = document.getElementById('sats-label')
 
     const rate = fiatamt.value // 1 btc = fiat amt
+
 
     dropdown.addEventListener('change', () => {
       console.log(dropdown.value)
@@ -102,7 +109,7 @@
     // allow for decimals!!
     satsamt.addEventListener('input', (event) => {
       const userInput = event.target.value;
-      const regex = /^\d+(\.\d{0,2})?$/;
+      const regex = /^\d+(\.\d{0,8})?$/;
       const isValid = regex.test(userInput);
       if (!isValid) {
         event.target.value = userInput.slice(0, -1);

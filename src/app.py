@@ -62,7 +62,9 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name='static')
 templates = Jinja2Templates(directory='templates/')
 
+fiatlist = ['HKD', 'USD', 'EUR', 'GBP']
 
+# initial get for index page
 @app.get("/")
 async def initial_page(request: Request):
     time, usdrate = coindesk_btc_fiat('USD')
@@ -74,30 +76,34 @@ async def initial_page(request: Request):
     return templates.TemplateResponse("index.html",
                                       context={
                                           'request': request,
-                                          'title': "Sats Converter",
+                                          'title': "BTC Converter",
                                           'btcprice': btcusd,
                                           'fiat': btchkd,
                                           'fiattype': 'HKD',
+                                          'fiatlist': fiatlist,
                                           'satsamt': 1.0,
                                           'moscow': moscowtime,
                                           'blockheight': height,
                                           'lastupdated': time})
 
 
-@app.post("/convert")
+# for btc page
+@app.post("/btc")
 async def submit_form(request: Request, selected: str = Form(...)):  # fiatselect: str = Form(...)): # trunk-ignore(ruff/B008)
     try:
-#        print(selected)
-#       return {"data" : selected}
         time, rate = coindesk_btc_fiat(selected)
         btcfiat = "%.2f" % rate
-
+        moscowtime = int(100000000/float(btcfiat))
+        height = get_block_height()
         return templates.TemplateResponse("index.html",
                                       context={
                                           'request': request,
                                           'fiattype': selected,
                                           'fiat': btcfiat,
+                                          'fiatlist': fiatlist,
+                                          'moscow': moscowtime,
+                                          'blockheight': height,
                                           'lastupdated': time,
-                                          'title': "Converter!"})
+                                          'title': "BTC Converter"})
     except Exception as e:
         logging.error(e)
