@@ -3,9 +3,10 @@ from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from locale import atof, setlocale, LC_NUMERIC
+from typing import Annotated
 
-# import uvicorn
+from locale import atof, setlocale, LC_NUMERIC
+import logging
 
 def get_block_height():
     url = "https://api.blockchair.com/bitcoin/stats"
@@ -63,7 +64,7 @@ templates = Jinja2Templates(directory='templates/')
 
 
 @app.get("/")
-def initial_page(request: Request):
+async def initial_page(request: Request):
     time, usdrate = coindesk_btc_fiat('USD')
     btcusd = "%.2f" % usdrate
     time, rate = coindesk_btc_fiat('HKD')
@@ -74,17 +75,29 @@ def initial_page(request: Request):
                                       context={
                                           'request': request,
                                           'title': "Sats Converter",
-                                          'usdprice': btcusd,
-                                          'fiatprice': btchkd,
+                                          'btcprice': btcusd,
+                                          'fiat': btchkd,
+                                          'satsamt': 1.0,
                                           'moscow': moscowtime,
                                           'blockheight': height,
                                           'lastupdated': time})
 
 
-# @app.route('/', methods=('POST'))
-# def convert_pricing():
-#     if request.method == 'POST':
-#          fiat_amt = request.form['fiatamt']
-#          sats_amt = request.form['satsamt']
-#     return render_template("index.html", title="Converted",
-#                            fiatprice=fiat_amt, btcprice=sats_amt)
+@app.post("/")
+async def convert(request: Request, fiat: float = Form(...),  # trunk-ignore(ruff/B008)
+                  satsamt: float = Form(...),   # trunk-ignore(ruff/B008)
+                  fiatselect: str = Form(...),  # trunk-ignore(ruff/B008)
+                  satselect: str = Form(...)):  # trunk-ignore(ruff/B008)
+    try:
+        data =  {'fiat': fiat,
+                'sats': satsamt,
+                'fiatselect': fiatselect,
+                'satselect': satselect}
+        print(data)
+        return templates.TemplateResponse("index.html",
+                                      context={
+                                          'request': request,
+                                          'title': "Converter!"})
+
+    except Exception as e:
+        logging.error(e)
