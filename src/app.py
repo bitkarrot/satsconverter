@@ -3,6 +3,8 @@ from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
+import starlette.status as status
 
 from locale import atof, setlocale, LC_NUMERIC
 import logging
@@ -87,10 +89,19 @@ async def initial_page(request: Request):
                                           'lastupdated': time})
 
 
+
+@app.get("/btc")
+async def redirectpage(request: Request):
+    return RedirectResponse('/', status_code=status.HTTP_302_FOUND)
+
+
 # for btc page
 @app.post("/btc")
 async def submit_form(request: Request, selected: str = Form(...)):  # fiatselect: str = Form(...)): # trunk-ignore(ruff/B008)
     try:
+        if selected is None:
+            return RedirectResponse('/', status_code=status.HTTP_302_FOUND)
+
         time, rate = coindesk_btc_fiat(selected)
         btcfiat = "%.2f" % rate
         moscowtime = int(100000000/float(btcfiat))
