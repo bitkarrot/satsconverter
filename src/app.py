@@ -3,7 +3,6 @@ from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from typing import Annotated
 
 from locale import atof, setlocale, LC_NUMERIC
 import logging
@@ -49,6 +48,7 @@ origins = [
     "http://localhost",
     "http://localhost:3000",
     "http://localhost:5000",
+    "http://localhost:8000",
 ]
 
 app.add_middleware(
@@ -77,27 +77,30 @@ async def initial_page(request: Request):
                                           'title': "Sats Converter",
                                           'btcprice': btcusd,
                                           'fiat': btchkd,
+                                          'fiattype': 'HKD',
                                           'satsamt': 1.0,
                                           'moscow': moscowtime,
                                           'blockheight': height,
                                           'lastupdated': time})
 
 
-@app.post("/")
-async def convert(request: Request, fiat: float = Form(...),  # trunk-ignore(ruff/B008)
-                  satsamt: float = Form(...),   # trunk-ignore(ruff/B008)
-                  fiatselect: str = Form(...),  # trunk-ignore(ruff/B008)
-                  satselect: str = Form(...)):  # trunk-ignore(ruff/B008)
+@app.post("/convert")
+async def submit_form(request: Request, selected: str = Form(...)):  # fiatselect: str = Form(...)): # trunk-ignore(ruff/B008)
     try:
-        data =  {'fiat': fiat,
-                'sats': satsamt,
-                'fiatselect': fiatselect,
-                'satselect': satselect}
-        print(data)
+        print(selected)
+#       return {"data" : selected}
+        time, rate = coindesk_btc_fiat(selected)
+        btcfiat = "%.2f" % rate
+
         return templates.TemplateResponse("index.html",
                                       context={
                                           'request': request,
+                                          'fiattype': selected,
+                                          'fiat': btcfiat,
+                                          'lastupdated': time,
                                           'title': "Converter!"})
-
     except Exception as e:
         logging.error(e)
+
+#        data =  {'fiatselect': fiatselect}
+#        print(data)

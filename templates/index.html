@@ -18,19 +18,31 @@
     </hgroup>
 
     <section id="converter">
-      <form method="post">
         <div class="grid">
+
           <div class="row center-sm">
-            <div class="col-sm-2">
-
-             <select id="fiatselect" name="fiatselect" required="true">
-                <option value="HKD" selected>HKD</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-              </select>
-
-
+            <div class="col-sm-4">
+               <button class="primary outline" type="" disabled>BTC</button>
+            </div>
+            <div class="col-sm-6">
+              <input type="text"
+                      name="satsamt"
+                      placeholder="1.0"
+                      aria-label="btc"
+                      value="{{satsamt}}">
+            </div>
+          </div>
+          <div class="row center-sm">
+            <div class="col-sm-4" id="app">
+              <form id="my-form" action="convert" method="post">
+              <select id="selected" name="selected">
+                <!-- todo make dyanmic -->
+                  <option value="HKD">HKD</option>
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
+                </select>
+              </form>
             </div>
             <div class="col-sm-6">
               <input type="text"
@@ -41,29 +53,12 @@
             </div>
           </div>
         </div>
-        <div class="row center-sm">
-          <div class="col-sm-2">
-            <select id="satselect" name="satselect" required="true">
-              <option value="BTC" selected>BTC</option>
-              <option value="SATS">Sats</option>
-            </select>
-          </div>
-          <div class="col-sm-6">
-            <input type="text"
-                    name="satsamt"
-                    placeholder="1.0"
-                    aria-label="btc"
-                    value="{{satsamt}}">
-          </div>
-        </div>
-        <div class="row center-sm">
-          <div class="col-sm-2">
-            <button type="submit">Switch</button>
-          </div>
-        </div>
-      </form>
+      <label>
+        1 BTC = {{fiat}} {{fiattype}}
+      </label>
     </section>
 
+    <!-- <button type="submit">Go</button> -->
     <section id="ticker">
       <p>
         $ {{ btcprice }} USD / BTC <br />
@@ -77,8 +72,14 @@
     </footer>
   </main>
 
-  <!-- vue global -->
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const dropdown = document.getElementById('selected')
+    const form = document.getElementById('my-form')
+    dropdown.addEventListener('change', () => {
+      console.log(dropdown.value)
+      form.submit();
+    })
+  </script>
 
 </body>
 </html>

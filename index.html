@@ -1,0 +1,23 @@
+<html>
+    <body>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<script type="module">
+    import { createApp } from 'vue'
+    
+    createApp({
+      data() {
+        return {
+          text: ''
+        }
+      }
+    }).mount('#app')
+    </script>
+
+            <div id="app">
+                <input v-model="text" placeholder="Type here">
+                <p>{{ text }}</p>
+              </div>
+        </body>
+    </html>
+    
