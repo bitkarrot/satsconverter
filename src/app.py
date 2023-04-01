@@ -64,7 +64,7 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name='static')
 templates = Jinja2Templates(directory='templates/')
 
-fiatlist = ['HKD', 'USD', 'EUR', 'GBP']
+fiatlist = ['HKD', 'USD', 'EUR', 'GBP', 'CNY']
 
 # initial get for index page
 @app.get("/")
