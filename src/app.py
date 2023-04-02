@@ -68,29 +68,26 @@ templates = Jinja2Templates(directory='templates/')
 fiatlist = ['HKD', 'USD', 'EUR', 'GBP', 'CNY']
 
 # initial get for index page
-
-
 @app.get("/")
 async def initial_page(request: Request):
-    time, usdrate = coindesk_btc_fiat('USD')
-    btcusd = "%.2f" % usdrate
-    time, rate = coindesk_btc_fiat('HKD')
+
+    currency = 'HKD'
+    time, rate = coindesk_btc_fiat(currency)
     btchkd = "%.2f" % rate
-    moscowtime = int(100000000/float(btcusd))
+    moscowtime = int(100000000/float(btchkd))
     height = get_block_height()
+
     return templates.TemplateResponse("index.html",
                                       context={
                                           'request': request,
                                           'title': "BTC Converter",
-                                          'btcprice': btcusd,
                                           'fiat': btchkd,
-                                          'fiattype': 'HKD',
+                                          'fiattype': currency,
                                           'fiatlist': fiatlist,
                                           'satsamt': 1.0,
                                           'moscow': moscowtime,
                                           'blockheight': height,
                                           'lastupdated': time})
-
 
 @app.get("/btc")
 async def redirectpage(request: Request):
@@ -99,7 +96,7 @@ async def redirectpage(request: Request):
 
 # for btc page
 @app.post("/btc")
-async def submit_form(request: Request, selected: str = Form(...)):
+async def submit_form(request: Request, selected: str = Form(...)):     # trunk-ignore(ruff/B008)
     try:
         if selected is None:
             return RedirectResponse('/', status_code=status.HTTP_302_FOUND)
@@ -108,6 +105,7 @@ async def submit_form(request: Request, selected: str = Form(...)):
         btcfiat = "%.2f" % rate
         moscowtime = int(100000000/float(btcfiat))
         height = get_block_height()
+
         return templates.TemplateResponse("index.html",
                                           context={
                                               'request': request,
