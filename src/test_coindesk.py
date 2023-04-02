@@ -1,17 +1,16 @@
 from app import coindesk_btc_fiat
 
 if __name__ == "__main__":
-    
-    asian_list = ['HKD','CNY','SGD','AUD','TWD','THB','KRW','JPY']
-    g7currencies = ['HKD','CNY','SGD','GBP','EUR','AUD','JPY']
-    
-    for symbol in asian_list:  
+
+    asian_list = ['HKD', 'CNY', 'SGD', 'AUD', 'TWD', 'THB', 'KRW', 'JPY']
+    g7currencies = ['HKD', 'CNY', 'SGD', 'GBP', 'EUR', 'AUD', 'JPY']
+
+    for symbol in asian_list:
         time, rate = coindesk_btc_fiat(symbol)
-        #print(f'Last Updated: {time}')
         arate = "%.2f" % rate
         print(arate)
         print(f'BTC/{symbol}: {"%.2f" % rate}')
-    
+
 
 '''
 {"time":{"updated":"Mar 10, 2021 00:54:00 UTC","updatedISO":"2021-03-10T00:54:00+00:00","updateduk":"Mar 10, 2021 at 00:54 GMT"},

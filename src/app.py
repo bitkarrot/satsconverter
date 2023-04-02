@@ -9,6 +9,7 @@ import starlette.status as status
 from locale import atof, setlocale, LC_NUMERIC
 import logging
 
+
 def get_block_height():
     url = "https://api.blockchair.com/bitcoin/stats"
     res = requests.get(url)
@@ -25,8 +26,8 @@ def coindesk_btc_fiat(symbol):
     ticker = response.json()
     time = ticker["time"]['updated']
     rate = ticker['bpi'][symbol]['rate']
-    r = atof(rate)
-    return time, r
+    parsed_rate = atof(rate)
+    return time, parsed_rate
 
 
 title = "sats converter"
@@ -67,6 +68,8 @@ templates = Jinja2Templates(directory='templates/')
 fiatlist = ['HKD', 'USD', 'EUR', 'GBP', 'CNY']
 
 # initial get for index page
+
+
 @app.get("/")
 async def initial_page(request: Request):
     time, usdrate = coindesk_btc_fiat('USD')
@@ -89,7 +92,6 @@ async def initial_page(request: Request):
                                           'lastupdated': time})
 
 
-
 @app.get("/btc")
 async def redirectpage(request: Request):
     return RedirectResponse('/', status_code=status.HTTP_302_FOUND)
@@ -97,7 +99,7 @@ async def redirectpage(request: Request):
 
 # for btc page
 @app.post("/btc")
-async def submit_form(request: Request, selected: str = Form(...)):  # fiatselect: str = Form(...)): # trunk-ignore(ruff/B008)
+async def submit_form(request: Request, selected: str = Form(...)):
     try:
         if selected is None:
             return RedirectResponse('/', status_code=status.HTTP_302_FOUND)
@@ -107,14 +109,14 @@ async def submit_form(request: Request, selected: str = Form(...)):  # fiatselec
         moscowtime = int(100000000/float(btcfiat))
         height = get_block_height()
         return templates.TemplateResponse("index.html",
-                                      context={
-                                          'request': request,
-                                          'fiattype': selected,
-                                          'fiat': btcfiat,
-                                          'fiatlist': fiatlist,
-                                          'moscow': moscowtime,
-                                          'blockheight': height,
-                                          'lastupdated': time,
-                                          'title': "BTC Converter"})
+                                          context={
+                                              'request': request,
+                                              'fiattype': selected,
+                                              'fiat': btcfiat,
+                                              'fiatlist': fiatlist,
+                                              'moscow': moscowtime,
+                                              'blockheight': height,
+                                              'lastupdated': time,
+                                              'title': "BTC Converter"})
     except Exception as e:
         logging.error(e)

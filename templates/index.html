@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="dark" data-webp="true" lang="en">
 <link rel="stylesheet" href="/static/pico.min.css" />
 <link rel="stylesheet" href="/static/css/themes/amber.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
@@ -9,10 +9,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.8" />
   <meta property="og:url" content="https://btc2fiat.vercel.com" />
   <meta charset="utf-8">
+
   <title>{{ title }}</title>
 </head>
 
 <body>
+    <!-- Nav -->
+    <nav class="container-fluid">
+      <ul>
+        <li>
+          <a href="https://bitcoin.org.hk/" aria-label="Bitcoin HK">
+            <img src="https://www.bitcoin.org.hk/images/bahk-logo-big-white.svg" height="60" width="60"/>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a class="secondary" href="#">Sats</a>
+        </li>
+        <li>
+          <a class="secondary" href="#">Blocks</a>
+        </li>
+        <li>
+          <a class="secondary" href="#">Contact</a>
+        </li>
+      </ul>
+    </nav><!-- ./ Nav -->
+
   <main class="container center-sm">
     <hgroup>
         <h1 style="color:#ffb300">
