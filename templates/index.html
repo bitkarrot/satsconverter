@@ -115,7 +115,7 @@
       }
       const result = parseFloat(userInput) / rate;  // convert btc to fiat rate
       console.log(rate)
-      satsamt.value = result.toFixed(8);
+      satsamt.value = result.toLocaleString();
       satlabel.innerHTML = parseFloat(satsamt.value) * 100000000;
 
     });
@@ -130,8 +130,9 @@
       }
       const result = parseFloat(userInput) * rate;  // convert sats to fiat rate
       console.log(rate)
-      fiatamt.value = result.toFixed(2);
-      satlabel.innerHTML = parseFloat(userInput) * 100000000;
+      fiatamt.value = result.toLocaleString();
+      satsvalue= parseFloat(userInput) * 100000000;
+      satlabel.innerHTML = satsvalue.toLocaleString();
 
     });
 
