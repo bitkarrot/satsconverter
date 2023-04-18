@@ -98,7 +98,7 @@
     const satsamt = document.getElementById('satsamt')
     const satlabel = document.getElementById('sats-label')
 
-    const rate = fiatamt.value // 1 btc = fiat amt
+    const rate = fiatamt.value.replace(",", "") // 1 btc = fiat amt (and removing the format added initially in app.py since further conversion needs to happen.)
 
     dropdown.addEventListener('change', () => {
       console.log(dropdown.value)
@@ -115,7 +115,7 @@
       }
       const result = parseFloat(userInput) / rate;  // convert btc to fiat rate
       console.log(rate)
-      satsamt.value = result.toFixed(8);
+      satsamt.value = result.toLocaleString();      // adding back format for better readability
       satlabel.innerHTML = parseFloat(satsamt.value) * 100000000;
 
     });
@@ -130,8 +130,9 @@
       }
       const result = parseFloat(userInput) * rate;  // convert sats to fiat rate
       console.log(rate)
-      fiatamt.value = result.toFixed(2);
-      satlabel.innerHTML = parseFloat(userInput) * 100000000;
+      fiatamt.value = result.toLocaleString();      // adding back the format for better readability
+      satsvalue= parseFloat(userInput) * 100000000;
+      satlabel.innerHTML = satsvalue.toLocaleString();
 
     });
 

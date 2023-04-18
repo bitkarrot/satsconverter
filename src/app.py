@@ -76,6 +76,7 @@ async def initial_page(request: Request):
     btchkd = "%.2f" % rate
     moscowtime = int(100000000/float(btchkd))
     height = get_block_height()
+    btchkd = "{:,}".format(float(btchkd)) #formatting with commas
 
     return templates.TemplateResponse("index.html",
                                       context={
@@ -105,6 +106,8 @@ async def submit_form(request: Request, selected: str = Form(...)):     # trunk-
         btcfiat = "%.2f" % rate
         moscowtime = int(100000000/float(btcfiat))
         height = get_block_height()
+        btcfiat = "{:,}".format(float(btcfiat))  #formatting with commas
+
 
         return templates.TemplateResponse("index.html",
                                           context={
