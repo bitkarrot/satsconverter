@@ -1,3 +1,6 @@
+python3 -m venv venv 
+source venv/bin/activate
+pip install -r requirements.txt
 <!DOCTYPE html>
 <html data-theme="dark" data-webp="true" lang="en">
 <link rel="stylesheet" href="/static/pico.min.css" />
@@ -54,6 +57,7 @@
             <input type="text" id="satsamt" name="satsamt" placeholder="1.0" aria-label="btc" value="{{satsamt}}">
           </div>
         </div>
+        <button class="copy-btn" ><img src="/static/images/copy-icon.png" alt="copy-icon" height="65px" width="65px"></button>
         <div class="row center-sm">
           <div class="col-sm-4">
             <form id="my-form" action="btc" method="post">

@@ -30,6 +30,14 @@
   --nav-logo-color: #0e1419;
 }
 
+.copy-btn{
+  /* display: flex;
+  align-items: end; */
+  margin-right: auto;
+  margin-left: 203%;
+  height: 65px;
+  width: 65px;
+}
 /* Amber (Common styles) */
 :root {
   --form-element-active-border-color: var(--primary);
