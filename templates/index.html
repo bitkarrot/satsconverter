@@ -47,7 +47,7 @@
     <section id="converter">
       <div class="grid">
         <div class="row center-sm">
-          <div class="col-sm-4">
+          <div class="col-sm-5">
             <button class="primary outline" name="swap">BTC</button>
           </div>
           <div class="col-sm-6">
@@ -55,7 +55,7 @@
           </div>
         </div>
         <div class="row center-sm">
-          <div class="col-sm-4">
+          <div class="col-sm-5">
             <form id="my-form" action="btc" method="post">
               <select id="selected" name="selected">
                 {% for item in fiatlist %}
@@ -68,8 +68,13 @@
               </select>
             </form>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-5">
             <input type="text" name="fiat" id="fiat" aria-label="fiat" value="{{fiat}}">
+          </div>
+          <div class="col-sm-2" style="margin-top: 10pt; cursor: pointer;">
+            <a onclick="copyToClipboard('fiat')">
+              <img src="../static/images/copy-icon.svg" alt="copy" width="40vw" height="40vh" fill="red"></img>
+            </a>
           </div>
         </div>
       </div>
@@ -138,6 +143,26 @@
       satlabel.innerHTML = satsvalue.toLocaleString();
 
     });
+
+    // copy to clipboard funciton
+    function copyToClipboard(id){
+      // get the element
+      var copyText = document.getElementById(id);
+      
+      // select it
+      copyText.select();
+      // VV for mobile
+      copyText.setSelectionRange(0, 99999);
+
+      // tries to copy it
+      var successful = document.execCommand('copy');
+      if (successful) {
+        alert("Successfully copied to clipboard!");
+      } else {
+        alert("Failed to copy to clipboard!");
+      }
+      // should probably change the alert to something prettier, but works for now :)
+    }
 
 
   </script>
