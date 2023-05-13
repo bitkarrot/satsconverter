@@ -48,7 +48,7 @@
       <div class="grid">
         <div class="row center-sm">
           <div class="col-sm-4">
-            <button class="primary outline" name="swap">BTC</button>
+            <button class="primary outline" id="toggle-btn">BTC</button>
           </div>
           <div class="col-sm-6">
             <input type="text" id="satsamt" name="satsamt" placeholder="1.0" aria-label="btc" value="{{satsamt}}">
@@ -80,6 +80,7 @@
         1 BTC = {{fiat}} {{fiattype}}
       </label>
     </section>
+    
 
     <section id="ticker">
       <p>
@@ -95,6 +96,36 @@
   </main>
 
   <script>
+    const toggleBtn = document.getElementById('toggle-btn');
+    let isBtcToSats = true; // default to BTC to SATS conversion
+    
+    toggleBtn.addEventListener('click', () => {
+    isBtcToSats = !isBtcToSats; // toggle the conversion direction
+
+    // update the button text and sats label accordingly
+    if (isBtcToSats) {
+    toggleBtn.textContent = 'BTC';
+    satslabel.textContent = 'SATS';
+    } else {
+    toggleBtn.textContent = 'SATS';
+    satslabel.textContent = 'BTC';
+    }
+
+    // perform the conversion
+    let inputVal = parseFloat(satsAmtInput.value);
+    if (!isNaN(inputVal)) {
+    if (isBtcToSats) {
+      inputVal *= 100000000; // convert BTC to SATS
+    } else {
+      inputVal /= 100000000; // convert SATS to BTC
+    }
+    satsAmtInput.value = inputVal;
+
+    // trigger the fiat input event to perform the fiat conversion
+    fiatamt.dispatchEvent(new Event('input'));
+    }
+    });
+    
     const dropdown = document.getElementById('selected')
     const form = document.getElementById('my-form')
     const fiatamt = document.getElementById('fiat')
@@ -116,15 +147,20 @@
       if (!isValid) {
         event.target.value = userInput.slice(0, -1);
       }
-      const result = parseFloat(userInput) / rate;  // convert btc to fiat rate
-      console.log(rate)
-      satsamt.value = result.toLocaleString(undefined, { minimumFractionDigits: 8 });      // adding back format for better readability
-      satsamtValue = parseFloat(satsamt.value) * 100000000;
-      satlabel.innerHTML = satsamtValue.toLocaleString(undefined, {minimumFractionDigits: 0});
-
+      if (isBtcToSats) {
+        const result = parseFloat(userInput) / rate;  // convert btc to fiat rate
+        satsamt.value = result.toLocaleString(undefined, { minimumFractionDigits: 8 }); // adding back format for better readability
+        satsamtValue = parseFloat(satsamt.value) * 100000000;
+        satlabel.innerHTML = satsamtValue.toLocaleString(undefined, { minimumFractionDigits: 0 });
+      } else {
+        const result = parseFloat(userInput) / rate * 100000000; // convert fiat to sats rate
+        satsamt.value = result.toLocaleString(undefined, { minimumFractionDigits: 0 }); // display sats value
+        satlabel.innerHTML = result.toLocaleString(undefined, { minimumFractionDigits: 0 });
+      }
     });
 
-    // btc input section
+
+    // btc/sats input section
     satsamt.addEventListener('input', (event) => {
       const userInput = event.target.value;
       const regex = /^\d+(\.\d{0,8})?$/;
@@ -132,12 +168,21 @@
       if (!isValid) {
         event.target.value = userInput.slice(0, -1);
       }
-      const result = parseFloat(userInput) * rate;  // convert sats to fiat rate
+      if (isBtcToSats){
+        const result = parseFloat(userInput) * rate;  // convert sats to fiat rate
       console.log(rate)
       fiatamt.value = result.toLocaleString(undefined, { minimumFractionDigits: 2 });   // adding back the format for better readability
       satsvalue= parseFloat(userInput) * 100000000;
       satlabel.innerHTML = satsvalue.toLocaleString(undefined, { minimumFractionDigits: 0 });
 
+      }
+      else{
+      const result = parseFloat(userInput) * rate / 100000000;  // convert sats to fiat rate
+      console.log(rate)
+      fiatamt.value = result.toLocaleString(undefined, { minimumFractionDigits: 2 });   // adding back the format for better readability
+      satsvalue = parseFloat(userInput);
+      satlabel.innerHTML = satsvalue.toLocaleString(undefined, { minimumFractionDigits: 0 });
+      }    
     });
 
 
