@@ -97,23 +97,30 @@
 
   <script>
     const toggleBtn = document.getElementById('toggle-btn');
-    let isBtcToSats = true; // default to BTC to SATS conversion
-    
-    toggleBtn.addEventListener('click', () => {
-    isBtcToSats = !isBtcToSats; // toggle the conversion direction
+  let isBtcToSats = true; // default to BTC to SATS conversion
+  const satsAmtInput = document.getElementById('satsamt');
+  const fiatAmtInput = document.getElementById('fiat');
+  const satlabel = document.getElementById('sats-label');
+  const fiatAmt = parseFloat(fiatAmtInput.value.replace(",", "")); // 1 BTC = fiatAmt (and removing the format added initially in app.py since further conversion needs to happen.)
 
-    // update the button text and sats label accordingly
-    if (isBtcToSats) {
+  toggleBtn.addEventListener('click', () => {
+  isBtcToSats = !isBtcToSats; // toggle the conversion direction
+
+  // Clear input values
+  satsAmtInput.value = '';
+  fiatAmtInput.value = '';
+  satlabel.textContent = ''; // Clear the content of sats-label
+
+  // update the button text accordingly
+  if (isBtcToSats) {
     toggleBtn.textContent = 'BTC';
-    satslabel.textContent = 'SATS';
-    } else {
+  } else {
     toggleBtn.textContent = 'SATS';
-    satslabel.textContent = 'BTC';
-    }
+  }
 
-    // perform the conversion
-    let inputVal = parseFloat(satsAmtInput.value);
-    if (!isNaN(inputVal)) {
+  // perform the conversion
+  let inputVal = parseFloat(satsAmtInput.value);
+  if (!isNaN(inputVal)) {
     if (isBtcToSats) {
       inputVal *= 100000000; // convert BTC to SATS
     } else {
@@ -122,15 +129,16 @@
     satsAmtInput.value = inputVal;
 
     // trigger the fiat input event to perform the fiat conversion
-    fiatamt.dispatchEvent(new Event('input'));
-    }
-    });
+    fiatAmtInput.dispatchEvent(new Event('input'));
+  }
+});
+
     
     const dropdown = document.getElementById('selected')
     const form = document.getElementById('my-form')
     const fiatamt = document.getElementById('fiat')
     const satsamt = document.getElementById('satsamt')
-    const satlabel = document.getElementById('sats-label')
+    // const satlabel = document.getElementById('sats-label')
 
     const rate = fiatamt.value.replace(",", "") // 1 btc = fiat amt (and removing the format added initially in app.py since further conversion needs to happen.)
 
