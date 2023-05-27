@@ -51,7 +51,7 @@
             <button class="primary outline" id="toggle-btn">BTC</button>
           </div>
           <div class="col-sm-6">
-            <input type="text" id="satsamt" name="satsamt" placeholder="1.0" aria-label="btc" value="{{satsamt}}">
+            <input type="text" id="satsamt" name="satsamt" aria-label="btc" value="{{satsamt}}">
           </div>
         </div>
         <div class="row center-sm">
@@ -97,7 +97,9 @@
 
   <script>
     const toggleBtn = document.getElementById('toggle-btn');
-  let isBtcToSats = true; // default to BTC to SATS conversion
+  let isBtcToSats = false; // default to BTC to SATS conversion
+  // Update the button text to reflect the default option
+  toggleBtn.textContent = 'SATS';
   const satsAmtInput = document.getElementById('satsamt');
   const fiatAmtInput = document.getElementById('fiat');
   const satlabel = document.getElementById('sats-label');
