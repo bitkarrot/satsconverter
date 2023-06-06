@@ -121,3 +121,30 @@ async def submit_form(request: Request, selected: str = Form(...)):     # trunk-
                                               'title': "BTC Converter"})
     except Exception as e:
         logging.error(e)
+
+@app.get("/rate")
+async def get_rate(pair: str):
+    """
+    Retrieve the exchange rate between BTC and given currency.
+
+    Parameters:
+        - **param1** (str)
+        eg: btcusd
+
+    Returns:
+        dict: {"rate":"12,00.35"}
+    """
+    currency = pair[-3:]
+    try:
+        if currency is None:
+            return RedirectResponse('/', status_code=status.HTTP_302_FOUND)
+
+        _, rate = coindesk_btc_fiat(currency.upper())
+        btcfiat = "%.2f" % rate
+        btcfiat = "{:,}".format(float(btcfiat))  #formatting with commas
+
+        data = {"rate" : btcfiat}
+        return data
+    
+    except Exception as e:
+        logging.error(e)
