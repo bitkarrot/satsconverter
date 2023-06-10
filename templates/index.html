@@ -74,7 +74,8 @@
         </div>
       </div>
       <label style="color:#ffb300">
-        <span id="sats-label"></span> sats
+        <span id="sats-label"></span>
+        <span id="text-label">BTC</span>
       </label>
       <label>
         1 BTC = {{fiat}} {{fiattype}}
@@ -100,6 +101,7 @@
   let isBtcToSats = false; // default to BTC to SATS conversion
   // Update the button text to reflect the default option
   toggleBtn.textContent = 'SATS';
+  const textLabel = document.getElementById("text-label");
   const satsAmtInput = document.getElementById('satsamt');
   const fiatAmtInput = document.getElementById('fiat');
   const satlabel = document.getElementById('sats-label');
@@ -116,8 +118,10 @@
   // update the button text accordingly
   if (isBtcToSats) {
     toggleBtn.textContent = 'BTC';
+    textLabel.textContent = 'SATS';
   } else {
     toggleBtn.textContent = 'SATS';
+    textLabel.textContent = 'BTC';
   }
 
   // perform the conversion
