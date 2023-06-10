@@ -182,21 +182,19 @@
       if (!isValid) {
         event.target.value = userInput.slice(0, -1);
       }
-      if (isBtcToSats){
+      if (isBtcToSats) {
         const result = parseFloat(userInput) * rate;  // convert sats to fiat rate
-      console.log(rate)
-      fiatamt.value = result.toLocaleString(undefined, { minimumFractionDigits: 2 });   // adding back the format for better readability
-      satsvalue= parseFloat(userInput) * 100000000;
-      satlabel.innerHTML = satsvalue.toLocaleString(undefined, { minimumFractionDigits: 0 });
-
+        console.log(rate);
+        fiatamt.value = result.toLocaleString(undefined, { minimumFractionDigits: 2 });   // adding back the format for better readability
+        satsvalue = parseFloat(userInput) * 100000000;
+        satlabel.innerHTML = satsvalue.toLocaleString(undefined, { minimumFractionDigits: 0 });
+      } else {
+        const result = parseFloat(userInput) / rate;  // convert fiat to BTC rate
+        console.log(rate);
+        fiatamt.value = result.toLocaleString(undefined, { minimumFractionDigits: 2 });   // adding back the format for better readability
+        satsvalue = parseFloat(userInput);
+        satlabel.innerHTML = (satsvalue / 100000000).toLocaleString(undefined, { minimumFractionDigits: 8 });
       }
-      else{
-      const result = parseFloat(userInput) * rate / 100000000;  // convert sats to fiat rate
-      console.log(rate)
-      fiatamt.value = result.toLocaleString(undefined, { minimumFractionDigits: 2 });   // adding back the format for better readability
-      satsvalue = parseFloat(userInput);
-      satlabel.innerHTML = satsvalue.toLocaleString(undefined, { minimumFractionDigits: 0 });
-      }    
     });
 
 
