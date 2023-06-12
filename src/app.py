@@ -73,6 +73,7 @@ async def initial_page(request: Request):
 
     currency = 'HKD'
     time, rate = coindesk_btc_fiat(currency)
+    print("rate ==>", rate)
     btchkd = "%.2f" % rate
     moscowtime = int(100000000/float(btchkd))
     height = get_block_height()
@@ -125,26 +126,51 @@ async def submit_form(request: Request, selected: str = Form(...)):     # trunk-
 @app.get("/rate")
 async def get_rate(pair: str):
     """
-    Retrieve the exchange rate between BTC and given currency.
+    Retrieve the exchange rate between BTC/SAT to any given pair and viceversa
 
     Parameters:
         - **param1** (str)
-        eg: btcusd
+        eg: btcusd, usdbtc, sathkd, eursat
 
     Returns:
-        dict: {"rate":"12,00.35"}
+        dict: {"rate":"1200.35"}
     """
-    currency = pair[-3:]
+    lenOfpair = len(pair)
+    if lenOfpair != 6:
+        return {"error": "Currency not found"}
+    if 'btc' in pair:
+        currency1 = pair[:3]
+        currency2 = pair[3:]
+        currency, inverse, sat = (currency2, False, False) if currency1 == "btc" else (currency1, True, False)
+    elif 'sat' in pair:
+        currency1 = pair[:3]
+        currency2 = pair[3:]
+        currency, inverse, sat = (currency2, False, True) if currency1 == "sat" else (currency1, True, True)
     try:
         if currency is None:
             return RedirectResponse('/', status_code=status.HTTP_302_FOUND)
-
+        
         _, rate = coindesk_btc_fiat(currency.upper())
-        btcfiat = "%.2f" % rate
-        btcfiat = "{:,}".format(float(btcfiat))  #formatting with commas
+
+        if not inverse and not sat:
+            btcfiat = "%.2f" % rate
+
+        if inverse and not sat:
+            btcfiat = 1/rate
+            btcfiat = format(btcfiat, '.8f')
+
+        if not inverse and sat:
+            btcfiat = rate/10**8
+            btcfiat = format(btcfiat, '.8f')
+
+        if inverse and sat:
+            btcfiat = (10**8)/rate
+            btcfiat = format(btcfiat, '.2f')
 
         data = {"rate" : btcfiat}
         return data
     
     except Exception as e:
         logging.error(e)
+        return {"error": "Failed to fetch exchange rate"}
+        
