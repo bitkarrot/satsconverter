@@ -73,7 +73,6 @@ async def initial_page(request: Request):
 
     currency = 'HKD'
     time, rate = coindesk_btc_fiat(currency)
-    print("rate ==>", rate)
     btchkd = "%.2f" % rate
     moscowtime = int(100000000/float(btchkd))
     height = get_block_height()
@@ -152,20 +151,18 @@ async def get_rate(pair: str):
         
         _, rate = coindesk_btc_fiat(currency.upper())
 
-        if not inverse and not sat:
-            btcfiat = "%.2f" % rate
-
-        if inverse and not sat:
-            btcfiat = 1/rate
-            btcfiat = format(btcfiat, '.8f')
-
-        if not inverse and sat:
-            btcfiat = rate/10**8
-            btcfiat = format(btcfiat, '.8f')
-
-        if inverse and sat:
-            btcfiat = (10**8)/rate
-            btcfiat = format(btcfiat, '.2f')
+        match(inverse, sat):
+            case(False, False):
+                btcfiat = "%.2f" % rate
+            case(True, False):
+                btcfiat = 1/rate
+                btcfiat = format(btcfiat, '.8f')
+            case(False, True):
+                btcfiat = rate/10**8
+                btcfiat = format(btcfiat, '.8f')
+            case(True, True):
+                btcfiat = (10**8)/rate
+                btcfiat = format(btcfiat, '.2f')        
 
         data = {"rate" : btcfiat}
         return data
